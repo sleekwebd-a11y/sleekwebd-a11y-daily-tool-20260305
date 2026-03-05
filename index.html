@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ReceiptSplit Lite</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Tesseract.js via CDN (client-side OCR) -->
+  <script src="https://unpkg.com/tesseract.js@v6.0.0/dist/tesseract.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>ReceiptSplit Lite</h1>
+    <p class="sub">Scan (optional), edit, assign, share link.</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>1) Add people</h2>
+      <label class="label">Names (comma-separated)</label>
+      <input id="peopleInput" class="input" placeholder="Alex, Sam, Jamie" />
+      <div class="row">
+        <button id="applyPeopleBtn" class="btn">Apply people</button>
+        <button id="addItemBtn" class="btn btnSecondary">Add item</button>
+      </div>
+      <div id="peopleChips" class="chips"></div>
+    </section>
+
+    <section class="card">
+      <h2>2) Scan receipt (optional)</h2>
+      <input id="photoInput" type="file" accept="image/*" capture="environment" />
+      <div class="row">
+        <button id="scanBtn" class="btn">Scan</button>
+        <button id="toggleRawBtn" class="btn btnSecondary">Show raw OCR</button>
+      </div>
+      <div id="progress" class="muted"></div>
+      <pre id="rawOcr" class="raw hidden"></pre>
+    </section>
+
+    <section class="card">
+      <h2>3) Items</h2>
+      <div class="tableWrap">
+        <table id="itemsTable">
+          <thead>
+            <tr>
+              <th>Item</th>
+              <th class="priceCol">Price</th>
+              <th>Who</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="itemsBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>4) Totals</h2>
+      <div id="totals" class="totals"></div>
+      <div class="row">
+        <button id="shareBtn" class="btn">Copy share link</button>
+        <button id="clearBtn" class="btn btnDanger">Clear</button>
+      </div>
+      <p class="muted small">
+        Share link stores data in the URL hash (#...), no server needed.
+      </p>
+    </section>
+  </main>
+
+  <footer class="muted small">
+    Tip: OCR isn’t perfect—expect quick manual fixes.
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
