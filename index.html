@@ -1,76 +1,66 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ReceiptSplit Lite</title>
-  <link rel="stylesheet" href="styles.css" />
+  <!-- Pico CSS CDN (modern, mobile-first, dark-mode) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css" />
   <!-- Tesseract.js via CDN (client-side OCR) -->
   <script src="https://unpkg.com/tesseract.js@v6.0.0/dist/tesseract.min.js"></script>
+  <style>
+    /* Tiny custom overrides for glassmorphism + app-specific */
+    :root { --glass: rgba(255,255,255,0.05); --glass-border: rgba(255,255,255,0.1); }
+    body { background: linear-gradient(135deg, #0b0c10 0%, #1a1b2e 50%, #16213e 100%); }
+    article { backdrop-filter: blur(20px); background: var(--glass); border: 1px solid var(--glass-border); }
+    input, select, button { border-radius: 12px; }
+    table { font-size: .875em; }
+    .raw { background: var(--glass); border: 1px solid var(--glass-border); }
+    .totals .grid { gap: .5em; }
+    .chips { display: flex; flex-wrap: wrap; gap: .5em; }
+    .chip { background: var(--glass); padding: .5em 1em; border-radius: 999px; font-size: .875em; }
+    .muted { opacity: .7; }
+    .small { font-size: .875em; }
+    .icon-btn { padding: .5em .75em; font-size: 1.1em; }
+    .progress { background: var(--glass); padding: .75em; border-radius: 12px; margin: .5em 0; }
+    header { text-align: center; padding: 2em 0 1em; }
+  </style>
 </head>
 <body>
   <header>
-    <h1>ReceiptSplit Lite</h1>
-    <p class="sub">Scan (optional), edit, assign, share link.</p>
+    <hgroup>
+      <h1>📱 ReceiptSplit Lite</h1>
+      <p>Scan receipt, assign items, share link. No account needed.</p>
+    </hgroup>
   </header>
 
   <main>
-    <section class="card">
-      <h2>1) Add people</h2>
-      <label class="label">Names (comma-separated)</label>
-      <input id="peopleInput" class="input" placeholder="Alex, Sam, Jamie" />
-      <div class="row">
-        <button id="applyPeopleBtn" class="btn">Apply people</button>
-        <button id="addItemBtn" class="btn btnSecondary">Add item</button>
+    <!-- People -->
+    <article>
+      <header>
+        <h3>👥 Add friends</h3>
+      </header>
+      <label for="peopleInput">Names (comma-separated)</label>
+      <input id="peopleInput" type="text" placeholder="Alex, Sam, Jamie" />
+      <div class="grid">
+        <button id="applyPeopleBtn">Apply people</button>
+        <button id="addItemBtn">+ Add item</button>
       </div>
       <div id="peopleChips" class="chips"></div>
-    </section>
+    </article>
 
-    <section class="card">
-      <h2>2) Scan receipt (optional)</h2>
+    <!-- Scan -->
+    <article>
+      <header>
+        <h3>📷 Scan receipt (optional)</h3>
+      </header>
       <input id="photoInput" type="file" accept="image/*" capture="environment" />
-      <div class="row">
-        <button id="scanBtn" class="btn">Scan</button>
-        <button id="toggleRawBtn" class="btn btnSecondary">Show raw OCR</button>
+      <div class="grid">
+        <button id="scanBtn">🔍 Scan</button>
+        <button id="toggleRawBtn">Raw OCR</button>
       </div>
-      <div id="progress" class="muted"></div>
+      <div id="progress" class="progress muted"></div>
       <pre id="rawOcr" class="raw hidden"></pre>
-    </section>
+    </article>
 
-    <section class="card">
-      <h2>3) Items</h2>
-      <div class="tableWrap">
-        <table id="itemsTable">
-          <thead>
-            <tr>
-              <th>Item</th>
-              <th class="priceCol">Price</th>
-              <th>Who</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="itemsBody"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>4) Totals</h2>
-      <div id="totals" class="totals"></div>
-      <div class="row">
-        <button id="shareBtn" class="btn">Copy share link</button>
-        <button id="clearBtn" class="btn btnDanger">Clear</button>
-      </div>
-      <p class="muted small">
-        Share link stores data in the URL hash (#...), no server needed.
-      </p>
-    </section>
-  </main>
-
-  <footer class="muted small">
-    Tip: OCR isn’t perfect—expect quick manual fixes.
-  </footer>
-
-  <script src="app.js"></script>
-</body>
-</html>
+    <!-- Items -->
